@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mybatis.mapper.UserMapper">
+    <!-- 查询所有用户 -->
+    <select id="listAll" resultType="org.example.mybatis.entity.User">
+        SELECT * FROM Users
+    </select>
+
+    <!-- 通过 ID 查询单个用户 -->
+    <select id="getUserById" parameterType="long" resultType="org.example.mybatis.entity.User">
+        SELECT * FROM Users WHERE UserID = #{userID}
+    </select>
+
+    <!-- 插入新用户 -->
+    <insert id="insertUser" parameterType="org.example.mybatis.entity.User">
+        INSERT INTO Users (Username, Password, Email, RegistrationDate)
+        VALUES (#{username}, #{password}, #{email}, #{registrationDate})
+    </insert>
+
+    <!-- 更新用户信息 -->
+    <update id="updateUser" parameterType="org.example.mybatis.entity.User">
+        UPDATE Users
+        SET Username = #{username}, Email = #{email}
+        WHERE UserID = #{userID}
+    </update>
+
+    <!-- 删除用户 -->
+    <delete id="deleteUser" parameterType="long">
+        DELETE FROM Users WHERE UserID = #{userID}
+    </delete>
+</mapper>
