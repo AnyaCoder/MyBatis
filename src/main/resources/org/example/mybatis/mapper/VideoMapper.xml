@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mybatis.mapper.VideoMapper">
+    <!-- 查询所有视频 -->
+    <select id="listAll" resultType="org.example.mybatis.entity.Video">
+        SELECT * FROM Videos
+    </select>
+
+    <!-- 通过 ID 查询单个视频  -->
+    <select id="getVideoByVideoId" parameterType="long" resultType="org.example.mybatis.entity.Video">
+        SELECT * FROM Videos WHERE VideoID = #{videoID}
+    </select>
+
+    <!-- 插入新视频  -->
+    <insert id="insertVideo" parameterType="org.example.mybatis.entity.Video">
+        INSERT INTO Videos (VideoID, UserID, Title, Description, UploadTime, VideoPath, Likes, Views)
+        VALUES (#{videoID}, #{userID}, #{title}, #{description}, NOW(), #{videoPath}, #{likes}, #{views})
+    </insert>
+
+    <!-- 更新用户视频 -->
+    <update id="updateVideo" parameterType="org.example.mybatis.entity.Video">
+        UPDATE Videos
+        SET Title = #{title}, Description = #{description}, UploadTime = #{uploadTime}, VideoPath = #{videoPath}, Likes = #{likes}, Views = #{views}
+        WHERE VideoID = #{videoID}
+    </update>
+
+    <!-- 删除视频  -->
+    <delete id="deleteVideo" parameterType="long">
+        DELETE FROM Videos WHERE VideoID = #{videoID}
+    </delete>
+</mapper>
