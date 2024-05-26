@@ -9,8 +9,8 @@ import java.util.List;
 @Mapper
 public interface VideoMapper {
     List<Video> listAll();
-    Video getVideoByVideoId(Long VideoID);
+    Video getVideoByVideoId(int VideoID);
     void insertVideo(Video video);
     void updateVideo(Video video);
-    void deleteVideo(Long videoID);
+    void deleteVideo(int videoID);
 }

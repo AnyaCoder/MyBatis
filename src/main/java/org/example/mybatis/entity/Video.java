@@ -11,8 +11,8 @@ import java.sql.Timestamp;
 @Data
 public class Video {
     // Getters and Setters
-    private Long videoID;
-    private Long userID;
+    private int videoID;
+    private int userID;
     private String title;
     private String description;
     private Timestamp uploadTime;

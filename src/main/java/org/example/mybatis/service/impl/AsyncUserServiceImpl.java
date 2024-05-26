@@ -20,7 +20,7 @@ public class AsyncUserServiceImpl implements AsyncUserService {
     private JdbcTemplate jdbcTemplate;
 
     @Async
-    public CompletableFuture<User> getUserProcedure(Long userID) {
+    public CompletableFuture<User> getUserProcedure(int userID) {
         return CompletableFuture.supplyAsync(() -> jdbcTemplate.execute((Connection connection) -> {
             User user = null;
             try (CallableStatement callableStatement = connection.prepareCall("{call GetUser(?)}")) {
@@ -28,7 +28,7 @@ public class AsyncUserServiceImpl implements AsyncUserService {
                 try (ResultSet resultSet = callableStatement.executeQuery()) {
                     if (resultSet.next()) {
                         user = new User();
-                        user.setUserID(resultSet.getLong("UserID"));
+                        user.setUserID(resultSet.getInt("UserID"));
                         user.setUsername(resultSet.getString("Username"));
                         user.setPassword(resultSet.getString("Password"));
                         user.setEmail(resultSet.getString("Email"));
@@ -46,11 +46,11 @@ public class AsyncUserServiceImpl implements AsyncUserService {
 
 
     @Async
-    public CompletableFuture<Void> addNewUserProcedure(Long userID, String username, String password, String email, String phoneNumber, int gender) {
+    public CompletableFuture<Void> addNewUserProcedure(int userID, String username, String password, String email, String phoneNumber, int gender) {
         return CompletableFuture.runAsync(() -> {
             jdbcTemplate.execute((Connection connection) -> {
                 try (CallableStatement callableStatement = connection.prepareCall("{call InsertNewUser(?, ?, ?, ?, ?, ?)}")) {
-                    callableStatement.setLong(1, userID);
+                    callableStatement.setInt(1, userID);
                     callableStatement.setString(2, username);
                     callableStatement.setString(3, password);
                     callableStatement.setString(4, email);

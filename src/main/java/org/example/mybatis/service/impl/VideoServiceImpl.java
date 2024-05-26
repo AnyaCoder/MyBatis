@@ -20,7 +20,7 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public Video getVideoByVideoId(Long videoId) {
+    public Video getVideoByVideoId(int videoId) {
         return videoMapper.getVideoByVideoId(videoId);
     }
 
@@ -42,7 +42,7 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public boolean deleteVideo(Long videoId) {
+    public boolean deleteVideo(int videoId) {
         // 检查用户是否存在
         Video existingVideo = videoMapper.getVideoByVideoId(videoId);
         if (existingVideo != null) {

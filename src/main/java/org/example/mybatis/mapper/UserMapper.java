@@ -8,8 +8,8 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     List<User> listAll();
-    User getUserById(Long userID);
+    User getUserById(int userID);
     void insertUser(User user);
     void updateUser(User user);
-    void deleteUser(Long userID);
+    void deleteUser(int userID);
 }

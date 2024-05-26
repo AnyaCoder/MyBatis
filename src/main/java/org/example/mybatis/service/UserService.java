@@ -7,8 +7,8 @@ import java.util.concurrent.CompletableFuture;
 
 public interface UserService {
     List<User> listAllUsers();
-    User getUserById(Long userId);
+    User getUserById(int userId);
     void insertUser(User user);
     User updateUser(User user);
-    boolean deleteUser(Long userId);
+    boolean deleteUser(int userId);
 }

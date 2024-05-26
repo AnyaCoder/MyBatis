@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @Data
 public class User {
     // Getters and Setters
-    private Long userID;
+    private int userID;
     private String username;
     private String password;
     private String email;
