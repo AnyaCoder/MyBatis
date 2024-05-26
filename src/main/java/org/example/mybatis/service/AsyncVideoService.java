@@ -10,4 +10,8 @@ public interface AsyncVideoService {
     CompletableFuture<Void> addNewVideoProcedure(Long videoId, Long userID, String title, String description, String videoPath);
     CompletableFuture<Void> deleteVideoProcedure(Long userId);
     CompletableFuture<Void> updateVideoInfoProcedure(Long videoId, String title, String description, String videoPath);
+    CompletableFuture<Void> incrementViews(Long videoId);
+    CompletableFuture<Void> incrementLikes(Long videoId);
+    CompletableFuture<Void> decrementViews(Long videoId);
+    CompletableFuture<Void> decrementLikes(Long videoId);
 }

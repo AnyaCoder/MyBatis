@@ -53,6 +53,25 @@ public class VideoController {
                 });
     }
 
+    @PostMapping("/async/{videoId}/view")
+    public CompletableFuture<Void> addView(@PathVariable("videoId") Long videoId) {
+        return asyncVideoService.incrementViews(videoId);
+    }
+
+    @PostMapping("/async/{videoId}/like")
+    public CompletableFuture<Void> addLike(@PathVariable("videoId") Long videoId) {
+        return asyncVideoService.incrementLikes(videoId);
+    }
+
+    @DeleteMapping("/async/{videoId}/view")
+    public CompletableFuture<Void> deleteView(@PathVariable("videoId") Long videoId) {
+        return asyncVideoService.decrementViews(videoId);
+    }
+
+    @DeleteMapping("/async/{videoId}/like")
+    public CompletableFuture<Void> deleteLike(@PathVariable("videoId") Long videoId) {
+        return asyncVideoService.decrementLikes(videoId);
+    }
 
     // 查询所有用户
     @GetMapping

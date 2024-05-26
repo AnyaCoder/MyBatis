@@ -106,6 +106,68 @@ public class AsyncVideoServiceImpl implements AsyncVideoService {
         });
     }
 
+    @Async
+    @Override
+    public CompletableFuture<Void> incrementViews(Long videoId) {
+        return CompletableFuture.runAsync(() -> {
+            jdbcTemplate.execute((Connection connection) -> {
+                try (CallableStatement callableStatement = connection.prepareCall("{call IncrementVideoViews(?)}")) {
+                    callableStatement.setLong(1, videoId);
+                    callableStatement.execute();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            });
+        });
+    }
 
+    @Async
+    @Override
+    public CompletableFuture<Void> incrementLikes(Long videoId) {
+        return CompletableFuture.runAsync(() -> {
+            jdbcTemplate.execute((Connection connection) -> {
+                try (CallableStatement callableStatement = connection.prepareCall("{call IncrementVideoLikes(?)}")) {
+                    callableStatement.setLong(1, videoId);
+                    callableStatement.execute();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            });
+        });
+    }
+
+    @Async
+    @Override
+    public CompletableFuture<Void> decrementViews(Long videoId) {
+        return CompletableFuture.runAsync(() -> {
+            jdbcTemplate.execute((Connection connection) -> {
+                try (CallableStatement callableStatement = connection.prepareCall("{call DecrementVideoViews(?)}")) {
+                    callableStatement.setLong(1, videoId);
+                    callableStatement.execute();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            });
+        });
+    }
+
+    @Async
+    @Override
+    public CompletableFuture<Void> decrementLikes(Long videoId) {
+        return CompletableFuture.runAsync(() -> {
+            jdbcTemplate.execute((Connection connection) -> {
+                try (CallableStatement callableStatement = connection.prepareCall("{call DecrementVideoLikes(?)}")) {
+                    callableStatement.setLong(1, videoId);
+                    callableStatement.execute();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            });
+        });
+    }
 
 }
