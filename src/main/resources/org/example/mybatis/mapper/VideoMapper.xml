@@ -9,7 +9,7 @@
     </select>
 
     <!-- 通过 ID 查询单个视频  -->
-    <select id="getVideoByVideoId" parameterType="int" resultType="org.example.mybatis.entity.Video">
+    <select id="getVideoByVideoId" parameterType="long" resultType="org.example.mybatis.entity.Video">
         SELECT * FROM Videos WHERE VideoID = #{videoID}
     </select>
 
@@ -27,7 +27,7 @@
     </update>
 
     <!-- 删除视频  -->
-    <delete id="deleteVideo" parameterType="int">
+    <delete id="deleteVideo" parameterType="long">
         DELETE FROM Videos WHERE VideoID = #{videoID}
     </delete>
 </mapper>

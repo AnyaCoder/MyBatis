@@ -11,12 +11,12 @@ import java.sql.Timestamp;
 @Data
 public class Video {
     // Getters and Setters
-    private int videoID;
-    private int userID;
+    private Long videoID;
+    private Long userID;
     private String title;
     private String description;
     private Timestamp uploadTime;
     private String videoPath;
-    private int likes;
-    private int views;
+    private Long likes;
+    private Long views;
 }

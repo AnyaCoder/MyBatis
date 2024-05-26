@@ -23,12 +23,12 @@ public class AsyncVideoServiceImpl implements AsyncVideoService {
 
     @Async
     @Override
-    public CompletableFuture<Void> addNewVideoProcedure(int videoId, int userID, String title, String description, String videoPath) {
+    public CompletableFuture<Void> addNewVideoProcedure(Long videoId, Long userID, String title, String description, String videoPath) {
         return CompletableFuture.runAsync(() -> {
             jdbcTemplate.execute((Connection connection) -> {
                 try (CallableStatement callableStatement = connection.prepareCall("{call InsertNewVideo(?, ?, ?, ?, ?)}")) {
-                    callableStatement.setInt(1, videoId);
-                    callableStatement.setInt(2, userID);
+                    callableStatement.setLong(1, videoId);
+                    callableStatement.setLong(2, userID);
                     callableStatement.setString(3, title);
                     callableStatement.setString(4, description);
                     callableStatement.setString(5, videoPath);
@@ -43,7 +43,7 @@ public class AsyncVideoServiceImpl implements AsyncVideoService {
 
     @Async
     @Override
-    public CompletableFuture<Void> deleteVideoProcedure(int videoId) {
+    public CompletableFuture<Void> deleteVideoProcedure(Long videoId) {
         return CompletableFuture.runAsync(() -> {
             jdbcTemplate.execute((Connection connection) -> {
                 try (CallableStatement callableStatement = connection.prepareCall("{call DeleteVideo(?)}")) {
@@ -59,7 +59,7 @@ public class AsyncVideoServiceImpl implements AsyncVideoService {
 
     @Async
     @Override
-    public CompletableFuture<List<Video>> getUserVideosProcedure(int userId) {
+    public CompletableFuture<List<Video>> getUserVideosProcedure(Long userId) {
         return CompletableFuture.supplyAsync(() -> {
             return jdbcTemplate.execute((Connection connection) -> {
                 List<Video> videos = new ArrayList<>();
@@ -68,12 +68,12 @@ public class AsyncVideoServiceImpl implements AsyncVideoService {
                     try (ResultSet resultSet = callableStatement.executeQuery()) {
                         while (resultSet.next()) {
                             Video video = new Video();
-                            video.setVideoID(resultSet.getInt("VideoID"));
+                            video.setVideoID(resultSet.getLong("VideoID"));
                             video.setTitle(resultSet.getString("Title"));
                             video.setDescription(resultSet.getString("Description"));
                             video.setUploadTime(resultSet.getTimestamp("UploadTime"));
-                            video.setLikes(resultSet.getInt("Likes"));
-                            video.setViews(resultSet.getInt("Views"));
+                            video.setLikes(resultSet.getLong("Likes"));
+                            video.setViews(resultSet.getLong("Views"));
                             videos.add(video);
                         }
                     }
@@ -89,7 +89,7 @@ public class AsyncVideoServiceImpl implements AsyncVideoService {
 
     @Async
     @Override
-    public CompletableFuture<Void> updateVideoInfoProcedure(int videoId, String title, String description, String videoPath) {
+    public CompletableFuture<Void> updateVideoInfoProcedure(Long videoId, String title, String description, String videoPath) {
         return CompletableFuture.runAsync(() -> {
             jdbcTemplate.execute((Connection connection) -> {
                 try (CallableStatement callableStatement = connection.prepareCall("{call UpdateVideoInfo(?, ?, ?, ?)}")) {

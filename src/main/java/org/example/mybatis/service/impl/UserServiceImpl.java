@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(int userId) {
+    public User getUserById(Long userId) {
         return userMapper.getUserById(userId);
     }
 
@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean deleteUser(int userId) {
+    public boolean deleteUser(Long userId) {
         // 检查用户是否存在
         User existingUser = userMapper.getUserById(userId);
         if (existingUser != null) {

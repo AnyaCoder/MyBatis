@@ -21,7 +21,7 @@ public class UserController {
 
 
     @GetMapping("/async/{userId}")
-    public CompletableFuture<ResponseEntity<User>> getUserAsync(@PathVariable("userId") int userId) {
+    public CompletableFuture<ResponseEntity<User>> getUserAsync(@PathVariable("userId") Long userId) {
         return asyncUserService.getUserProcedure(userId)
                 .thenApply(user -> {
                     if (user != null) {
@@ -40,14 +40,14 @@ public class UserController {
 
     // 删除用户（异步）
     @DeleteMapping("/async/{userId}")
-    public CompletableFuture<ResponseEntity<String>> deleteUserAsync(@PathVariable("userId") int userId) {
+    public CompletableFuture<ResponseEntity<String>> deleteUserAsync(@PathVariable("userId") Long userId) {
         return asyncUserService.deleteUserProcedure(userId)
                 .thenApply(aVoid -> new ResponseEntity<>("User deleted successfully", HttpStatus.NO_CONTENT));
     }
 
     // 更新用户信息（异步）
     @PutMapping("/async/{userId}")
-    public CompletableFuture<ResponseEntity<String>> updateUserAsync(@PathVariable("userId") int userId,
+    public CompletableFuture<ResponseEntity<String>> updateUserAsync(@PathVariable("userId") Long userId,
                                                                      @RequestBody User user) {
         return asyncUserService.updateUserInfoProcedure(userId, user.getEmail(), user.getPhoneNumber())
                 .thenApply(aVoid -> new ResponseEntity<>("User updated successfully", HttpStatus.OK));
@@ -62,7 +62,7 @@ public class UserController {
 
     // 通过 ID 查询单个用户
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable("userId") int userId) {
+    public ResponseEntity<User> getUserById(@PathVariable("userId") Long userId) {
         User user = userService.getUserById(userId);
         if (user != null) {
             return new ResponseEntity<>(user, HttpStatus.OK);
@@ -80,7 +80,7 @@ public class UserController {
 
     // 更新用户信息
     @PutMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable("userId") int userId, @RequestBody User user) {
+    public ResponseEntity<User> updateUser(@PathVariable("userId") Long userId, @RequestBody User user) {
         user.setUserID(userId);
         User updatedUser = userService.updateUser(user);
         if (updatedUser != null) {
@@ -92,7 +92,7 @@ public class UserController {
 
     // 删除用户
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable("userId") int userId) {
+    public ResponseEntity<Void> deleteUser(@PathVariable("userId") Long userId) {
         boolean isDeleted = userService.deleteUser(userId);
         if (isDeleted) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

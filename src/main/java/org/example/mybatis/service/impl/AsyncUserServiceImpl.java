@@ -20,7 +20,7 @@ public class AsyncUserServiceImpl implements AsyncUserService {
     private JdbcTemplate jdbcTemplate;
 
     @Async
-    public CompletableFuture<User> getUserProcedure(int userID) {
+    public CompletableFuture<User> getUserProcedure(Long userID) {
         return CompletableFuture.supplyAsync(() -> jdbcTemplate.execute((Connection connection) -> {
             User user = null;
             try (CallableStatement callableStatement = connection.prepareCall("{call GetUser(?)}")) {
@@ -28,7 +28,7 @@ public class AsyncUserServiceImpl implements AsyncUserService {
                 try (ResultSet resultSet = callableStatement.executeQuery()) {
                     if (resultSet.next()) {
                         user = new User();
-                        user.setUserID(resultSet.getInt("UserID"));
+                        user.setUserID(resultSet.getLong("UserID"));
                         user.setUsername(resultSet.getString("Username"));
                         user.setPassword(resultSet.getString("Password"));
                         user.setEmail(resultSet.getString("Email"));
@@ -46,11 +46,11 @@ public class AsyncUserServiceImpl implements AsyncUserService {
 
 
     @Async
-    public CompletableFuture<Void> addNewUserProcedure(int userID, String username, String password, String email, String phoneNumber, int gender) {
+    public CompletableFuture<Void> addNewUserProcedure(Long userID, String username, String password, String email, String phoneNumber, int gender) {
         return CompletableFuture.runAsync(() -> {
             jdbcTemplate.execute((Connection connection) -> {
                 try (CallableStatement callableStatement = connection.prepareCall("{call InsertNewUser(?, ?, ?, ?, ?, ?)}")) {
-                    callableStatement.setInt(1, userID);
+                    callableStatement.setLong(1, userID);
                     callableStatement.setString(2, username);
                     callableStatement.setString(3, password);
                     callableStatement.setString(4, email);
@@ -66,11 +66,11 @@ public class AsyncUserServiceImpl implements AsyncUserService {
     }
 
     @Async
-    public CompletableFuture<Void> deleteUserProcedure(int userId) {
+    public CompletableFuture<Void> deleteUserProcedure(Long userId) {
         return CompletableFuture.runAsync(() -> {
             jdbcTemplate.execute((Connection connection) -> {
                 try (CallableStatement callableStatement = connection.prepareCall("{call DeleteUser(?)}")) {
-                    callableStatement.setInt(1, userId);
+                    callableStatement.setLong(1, userId);
                     callableStatement.execute();
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -81,11 +81,11 @@ public class AsyncUserServiceImpl implements AsyncUserService {
     }
 
     @Async
-    public CompletableFuture<Void> updateUserInfoProcedure(int userId, String email, String phoneNumber) {
+    public CompletableFuture<Void> updateUserInfoProcedure(Long userId, String email, String phoneNumber) {
         return CompletableFuture.runAsync(() -> {
             jdbcTemplate.execute((Connection connection) -> {
                 try (CallableStatement callableStatement = connection.prepareCall("{call UpdateUserInfo(?, ?, ?)}")) {
-                    callableStatement.setInt(1, userId);
+                    callableStatement.setLong(1, userId);
                     callableStatement.setString(2, email);
                     callableStatement.setString(3, phoneNumber);
                     callableStatement.execute();

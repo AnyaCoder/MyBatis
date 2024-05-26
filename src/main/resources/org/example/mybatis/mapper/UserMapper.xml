@@ -9,7 +9,7 @@
     </select>
 
     <!-- 通过 ID 查询单个用户 -->
-    <select id="getUserById" parameterType="int" resultType="org.example.mybatis.entity.User">
+    <select id="getUserById" parameterType="long" resultType="org.example.mybatis.entity.User">
         SELECT * FROM Users WHERE UserID = #{userID}
     </select>
 
@@ -27,7 +27,7 @@
     </update>
 
     <!-- 删除用户 -->
-    <delete id="deleteUser" parameterType="int">
+    <delete id="deleteUser" parameterType="long">
         DELETE FROM Users WHERE UserID = #{userID}
     </delete>
 </mapper>
