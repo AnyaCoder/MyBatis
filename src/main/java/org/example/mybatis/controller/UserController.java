@@ -1,11 +1,12 @@
 package org.example.mybatis.controller;
 import org.example.mybatis.entity.User;
+import org.example.mybatis.service.AsyncUserService;
 import org.example.mybatis.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.concurrent.CompletableFuture;
 import java.util.List;
 
 @RestController
@@ -14,6 +15,43 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AsyncUserService asyncUserService;
+
+
+    @GetMapping("/async/{userId}")
+    public CompletableFuture<ResponseEntity<User>> getUserAsync(@PathVariable("userId") Long userId) {
+        return asyncUserService.getUserProcedure(userId)
+                .thenApply(user -> {
+                    if (user != null) {
+                        return new ResponseEntity<>(user, HttpStatus.OK);
+                    } else {
+                        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                    }
+                });
+    }
+
+    @PostMapping("/async")
+    public CompletableFuture<ResponseEntity<String>> insertUserAsync(@RequestBody User user) {
+        return asyncUserService.addNewUserProcedure(user.getUserID(), user.getUsername(), user.getPassword(), user.getEmail(), user.getPhoneNumber(), user.getGender())
+                .thenApply(aVoid -> new ResponseEntity<>("User added successfully", HttpStatus.CREATED));
+    }
+
+    // 删除用户（异步）
+    @DeleteMapping("/async/{userId}")
+    public CompletableFuture<ResponseEntity<String>> deleteUserAsync(@PathVariable("userId") int userId) {
+        return asyncUserService.deleteUserProcedure(userId)
+                .thenApply(aVoid -> new ResponseEntity<>("User deleted successfully", HttpStatus.NO_CONTENT));
+    }
+
+    // 更新用户信息（异步）
+    @PutMapping("/async/{userId}")
+    public CompletableFuture<ResponseEntity<String>> updateUserAsync(@PathVariable("userId") int userId,
+                                                                     @RequestBody User user) {
+        return asyncUserService.updateUserInfoProcedure(userId, user.getEmail(), user.getPhoneNumber())
+                .thenApply(aVoid -> new ResponseEntity<>("User updated successfully", HttpStatus.OK));
+    }
 
     // 查询所有用户
     @GetMapping
