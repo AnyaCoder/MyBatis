@@ -21,13 +21,13 @@ public class CommentController {
     public CompletableFuture<ResponseEntity<String>> insertNewComment(
             @RequestBody Comment comment) {
         return asyncCommentCommentService.insertNewComment(comment.getVideoID(), comment.getUserID(), comment.getContent())
-                .thenApply(aVoid -> new ResponseEntity<>("Comment added successfully", HttpStatus.CREATED));
+                .thenApply(aVoid -> new ResponseEntity<>("{\"msg\": \"Comment added successfully\"}", HttpStatus.CREATED));
     }
 
     @DeleteMapping("/async/{commentId}")
     public CompletableFuture<ResponseEntity<String>> deleteComment(@PathVariable("commentId") Long commentId) {
         return asyncCommentCommentService.deleteComment(commentId)
-                .thenApply(aVoid -> new ResponseEntity<>("Comment deleted successfully", HttpStatus.NO_CONTENT));
+                .thenApply(aVoid -> new ResponseEntity<>("{\"msg\": \"Comment deleted successfully\"}", HttpStatus.NO_CONTENT));
     }
 
     @PutMapping("/async/{commentId}")
@@ -35,7 +35,7 @@ public class CommentController {
             @PathVariable("commentId") Long commentId,
             @RequestBody Comment comment) {
         return asyncCommentCommentService.updateComment(commentId, comment.getContent())
-                .thenApply(aVoid -> new ResponseEntity<>("Comment updated successfully", HttpStatus.OK));
+                .thenApply(aVoid -> new ResponseEntity<>("{\"msg\": \"Comment updated successfully\"}", HttpStatus.OK));
     }
 
     @GetMapping("/async/video/{videoId}")

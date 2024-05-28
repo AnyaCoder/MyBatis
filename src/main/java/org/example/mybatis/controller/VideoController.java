@@ -23,14 +23,14 @@ public class VideoController {
     @PostMapping("/async")
     public CompletableFuture<ResponseEntity<String>> insertVideoAsync(@RequestBody Video video) {
         return asyncVideoService.addNewVideoProcedure(video.getVideoID(), video.getUserID(), video.getTitle(), video.getDescription(), video.getVideoPath())
-                .thenApply(aVoid -> new ResponseEntity<>("Video added successfully", HttpStatus.CREATED));
+                .thenApply(aVoid -> new ResponseEntity<>("{\"msg\": \"Video added successfully\"}", HttpStatus.CREATED));
     }
 
 
     @DeleteMapping("/async/{videoId}")
     public CompletableFuture<ResponseEntity<String>> deleteVideoAsync(@PathVariable("videoId") Long videoId) {
         return asyncVideoService.deleteVideoProcedure(videoId)
-                .thenApply(aVoid -> new ResponseEntity<>("Video deleted successfully", HttpStatus.NO_CONTENT));
+                .thenApply(aVoid -> new ResponseEntity<>("{\"msg\": \"Video deleted successfully\"}", HttpStatus.NO_CONTENT));
     }
 
     @PutMapping("/async/{videoId}")
@@ -38,7 +38,7 @@ public class VideoController {
             @PathVariable("videoId") Long videoId,
             @RequestBody Video video) {
         return asyncVideoService.updateVideoInfoProcedure(videoId, video.getTitle(), video.getDescription(), video.getVideoPath())
-                .thenApply(aVoid -> new ResponseEntity<>("Video updated successfully", HttpStatus.OK));
+                .thenApply(aVoid -> new ResponseEntity<>("{\"msg\": \"Video updated successfully\"}", HttpStatus.OK));
     }
 
     @GetMapping("/async/{userId}")

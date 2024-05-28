@@ -21,14 +21,14 @@ public class FollowController {
     public CompletableFuture<ResponseEntity<String>> insertNewFollow(
             @RequestBody Follows follows) {
         return asyncFollowService.insertNewFollow(follows.getUserId(), follows.getFollowedUserId())
-                .thenApply(aVoid -> new ResponseEntity<>("Follows added successfully", HttpStatus.CREATED));
+                .thenApply(aVoid -> new ResponseEntity<>("{\"msg\": \"Follows added successfully\"}", HttpStatus.CREATED));
     }
 
     @DeleteMapping("/async")
     public CompletableFuture<ResponseEntity<String>> deleteFollow(
             @RequestBody Follows follows) {
         return asyncFollowService.deleteFollow(follows.getUserId(), follows.getFollowedUserId())
-                .thenApply(aVoid -> new ResponseEntity<>("Follows deleted successfully", HttpStatus.NO_CONTENT));
+                .thenApply(aVoid -> new ResponseEntity<>("{\"msg\": \"Follows deleted successfully\"}", HttpStatus.NO_CONTENT));
     }
 
     @GetMapping("/async/followers/{userId}")

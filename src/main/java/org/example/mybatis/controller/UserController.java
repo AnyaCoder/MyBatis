@@ -35,22 +35,22 @@ public class UserController {
     @PostMapping("/async")
     public CompletableFuture<ResponseEntity<String>> insertUserAsync(@RequestBody User user) {
         return asyncUserService.addNewUserProcedure(user.getUserID(), user.getUsername(), user.getPassword(), user.getEmail(), user.getPhoneNumber(), user.getGender())
-                .thenApply(aVoid -> new ResponseEntity<>("User added successfully", HttpStatus.CREATED));
+                .thenApply(aVoid -> new ResponseEntity<>("{\"msg\": \"User added successfully\"}", HttpStatus.CREATED));
     }
 
     // 删除用户（异步）
     @DeleteMapping("/async/{userId}")
     public CompletableFuture<ResponseEntity<String>> deleteUserAsync(@PathVariable("userId") Long userId) {
         return asyncUserService.deleteUserProcedure(userId)
-                .thenApply(aVoid -> new ResponseEntity<>("User deleted successfully", HttpStatus.NO_CONTENT));
+                .thenApply(aVoid -> new ResponseEntity<>("{\"msg\": \"User deleted successfully\"}", HttpStatus.NO_CONTENT));
     }
 
     // 更新用户信息（异步）
     @PutMapping("/async/{userId}")
     public CompletableFuture<ResponseEntity<String>> updateUserAsync(@PathVariable("userId") Long userId,
                                                                      @RequestBody User user) {
-        return asyncUserService.updateUserInfoProcedure(userId, user.getEmail(), user.getPhoneNumber())
-                .thenApply(aVoid -> new ResponseEntity<>("User updated successfully", HttpStatus.OK));
+        return asyncUserService.updateUserInfoProcedure(userId, user.getUsername(), user.getPassword(), user.getEmail(), user.getPhoneNumber(), user.getGender())
+                .thenApply(aVoid -> new ResponseEntity<>("{\"msg\": \"User updated successfully\"}", HttpStatus.OK));
     }
 
     // 查询所有用户

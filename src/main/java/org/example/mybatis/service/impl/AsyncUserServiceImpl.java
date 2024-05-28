@@ -69,7 +69,7 @@ public class AsyncUserServiceImpl implements AsyncUserService {
     public CompletableFuture<Void> deleteUserProcedure(Long userId) {
         return CompletableFuture.runAsync(() -> {
             jdbcTemplate.execute((Connection connection) -> {
-                try (CallableStatement callableStatement = connection.prepareCall("{call DeleteUser(?)}")) {
+                try (CallableStatement callableStatement = connection.prepareCall("{call DeleteUserAndRelatedData(?)}")) {
                     callableStatement.setLong(1, userId);
                     callableStatement.execute();
                 } catch (SQLException e) {
@@ -81,13 +81,16 @@ public class AsyncUserServiceImpl implements AsyncUserService {
     }
 
     @Async
-    public CompletableFuture<Void> updateUserInfoProcedure(Long userId, String email, String phoneNumber) {
+    public CompletableFuture<Void> updateUserInfoProcedure(Long userId,  String username, String password, String email, String phoneNumber, int gender) {
         return CompletableFuture.runAsync(() -> {
             jdbcTemplate.execute((Connection connection) -> {
-                try (CallableStatement callableStatement = connection.prepareCall("{call UpdateUserInfo(?, ?, ?)}")) {
+                try (CallableStatement callableStatement = connection.prepareCall("{call UpdateUserInfo(?, ?, ?, ?, ?, ?)}")) {
                     callableStatement.setLong(1, userId);
-                    callableStatement.setString(2, email);
-                    callableStatement.setString(3, phoneNumber);
+                    callableStatement.setString(2, username);
+                    callableStatement.setString(3, password);
+                    callableStatement.setString(4, email);
+                    callableStatement.setString(5, phoneNumber);
+                    callableStatement.setInt(6, gender);
                     callableStatement.execute();
                 } catch (SQLException e) {
                     e.printStackTrace();
