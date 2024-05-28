@@ -1,6 +1,7 @@
 package org.example.mybatis.service.impl;
 
 import org.example.mybatis.entity.Comment;
+import org.example.mybatis.entity.CommentInfo;
 import org.example.mybatis.service.AsyncCommentService;
 import org.example.mybatis.service.AsyncVideoService;
 import org.springframework.stereotype.Service;
@@ -69,6 +70,36 @@ public class AsyncCommentServiceImpl implements AsyncCommentService {
             });
         });
     }
+
+    @Async
+    @Override
+    public CompletableFuture<List<CommentInfo>> getAllComments() {
+        return CompletableFuture.supplyAsync(() -> {
+            return jdbcTemplate.execute((Connection connection) -> {
+                List<CommentInfo> commentInfos = new ArrayList<>();
+                try (CallableStatement callableStatement = connection.prepareCall("{call GetAllComments()}")) {
+                    try (ResultSet resultSet = callableStatement.executeQuery()) {
+                        while (resultSet.next()) {
+                            CommentInfo commentInfo = new CommentInfo();
+                            commentInfo.setCommentID(resultSet.getLong("CommentID"));
+                            commentInfo.setContent(resultSet.getString("Content"));
+                            commentInfo.setCommentTime(resultSet.getTimestamp("CommentTime"));
+                            commentInfo.setUserID(resultSet.getLong("UserID"));
+                            commentInfo.setUsername(resultSet.getString("Username"));
+                            commentInfo.setVideoID(resultSet.getLong("VideoID"));
+                            commentInfo.setTitle(resultSet.getString("Title"));
+                            commentInfos.add(commentInfo);
+                        }
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return commentInfos;
+            });
+        });
+
+    }
+
 
     @Async
     public CompletableFuture<List<Comment>> getVideoComments(Long videoId) {
