@@ -27,15 +27,21 @@ public class UserController {
                     if (user != null) {
                         return new ResponseEntity<>(user, HttpStatus.OK);
                     } else {
-                        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
                     }
                 });
     }
 
     @PostMapping("/async")
-    public CompletableFuture<ResponseEntity<String>> insertUserAsync(@RequestBody User user) {
-        return asyncUserService.addNewUserProcedure(user.getUserID(), user.getUsername(), user.getPassword(), user.getEmail(), user.getPhoneNumber(), user.getGender())
-                .thenApply(aVoid -> new ResponseEntity<>("{\"msg\": \"User added successfully\"}", HttpStatus.CREATED));
+    public CompletableFuture<ResponseEntity<User>> insertUserAsync(@RequestBody User user) {
+        return asyncUserService.addNewUserProcedure(user.getUsername(), user.getPassword(), user.getEmail(), user.getPhoneNumber(), user.getGender())
+                .thenApply(newUser -> {
+                    if (newUser != null) {
+                        return new ResponseEntity<>(newUser, HttpStatus.OK);
+                    } else {
+                        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                    }
+                });
     }
 
     // 删除用户（异步）

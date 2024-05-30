@@ -1,5 +1,6 @@
 package org.example.mybatis.service.impl;
 
+import org.example.mybatis.entity.User;
 import org.example.mybatis.entity.Video;
 import org.example.mybatis.service.AsyncVideoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,22 +24,25 @@ public class AsyncVideoServiceImpl implements AsyncVideoService {
 
     @Async
     @Override
-    public CompletableFuture<Void> addNewVideoProcedure(Long videoId, Long userID, String title, String description, String videoPath) {
-        return CompletableFuture.runAsync(() -> {
-            jdbcTemplate.execute((Connection connection) -> {
-                try (CallableStatement callableStatement = connection.prepareCall("{call InsertNewVideo(?, ?, ?, ?, ?)}")) {
-                    callableStatement.setLong(1, videoId);
-                    callableStatement.setLong(2, userID);
-                    callableStatement.setString(3, title);
-                    callableStatement.setString(4, description);
-                    callableStatement.setString(5, videoPath);
-                    callableStatement.execute();
-                } catch (SQLException e) {
-                    e.printStackTrace();
+    public CompletableFuture<Video> addNewVideoProcedure(Long userID, String title, String description, String videoPath) {
+        return CompletableFuture.supplyAsync(() -> jdbcTemplate.execute((Connection connection) -> {
+            Video video = null;
+            try (CallableStatement callableStatement = connection.prepareCall("{call InsertNewVideo(?, ?, ?, ?)}")) {
+                callableStatement.setLong(1, userID);
+                callableStatement.setString(2, title);
+                callableStatement.setString(3, description);
+                callableStatement.setString(4, videoPath);
+                try (ResultSet resultSet = callableStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        video = new Video();
+                        video.setVideoID(resultSet.getLong("LAST_INSERT_ID()"));
+                    }
                 }
-                return null;
-            });
-        });
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return video;
+        }));
     }
 
     @Async
