@@ -17,6 +17,7 @@ public class Video {
     private String description;
     private Timestamp uploadTime;
     private String videoPath;
+    private String thumbnailPath;
     private Long likes;
     private Long views;
 }
