@@ -111,6 +111,7 @@ public class AsyncCommentServiceImpl implements AsyncCommentService {
                     try (ResultSet resultSet = callableStatement.executeQuery()) {
                         while (resultSet.next()) {
                             Comment comment = new Comment();
+                            comment.setCommentID(resultSet.getLong("CommentID"));
                             comment.setContent(resultSet.getString("Content"));
                             comment.setCommentTime(resultSet.getTimestamp("CommentTime"));
                             comment.setUsername(resultSet.getString("Username"));
