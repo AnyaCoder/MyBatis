@@ -5,12 +5,15 @@
 <mapper namespace="org.example.mybatis.mapper.VideoMapper">
     <!-- 查询所有视频 -->
     <select id="listAll" resultType="org.example.mybatis.entity.Video">
-        SELECT * FROM Videos
+        SELECT *
+        FROM Videos
     </select>
 
     <!-- 通过 ID 查询单个视频  -->
     <select id="getVideoByVideoId" parameterType="long" resultType="org.example.mybatis.entity.Video">
-        SELECT * FROM Videos WHERE VideoID = #{videoID}
+        SELECT *
+        FROM Videos
+        WHERE VideoID = #{videoID}
     </select>
 
     <!-- 插入新视频  -->
@@ -22,12 +25,19 @@
     <!-- 更新用户视频 -->
     <update id="updateVideo" parameterType="org.example.mybatis.entity.Video">
         UPDATE Videos
-        SET Title = #{title}, Description = #{description}, UploadTime = #{uploadTime}, VideoPath = #{videoPath}, Likes = #{likes}, Views = #{views}
+        SET Title       = #{title},
+            Description = #{description},
+            UploadTime  = #{uploadTime},
+            VideoPath   = #{videoPath},
+            Likes       = #{likes},
+            Views       = #{views}
         WHERE VideoID = #{videoID}
     </update>
 
     <!-- 删除视频  -->
     <delete id="deleteVideo" parameterType="long">
-        DELETE FROM Videos WHERE VideoID = #{videoID}
+        DELETE
+        FROM Videos
+        WHERE VideoID = #{videoID}
     </delete>
 </mapper>

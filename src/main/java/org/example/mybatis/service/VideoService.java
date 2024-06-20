@@ -1,6 +1,5 @@
 package org.example.mybatis.service;
 
-import org.example.mybatis.entity.User;
 import org.example.mybatis.entity.Video;
 
 import java.util.List;

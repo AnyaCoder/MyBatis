@@ -46,6 +46,32 @@ public class AsyncUserServiceImpl implements AsyncUserService {
 
 
     @Async
+    public CompletableFuture<User> getUserByEmailProcedure(String email) {
+        return CompletableFuture.supplyAsync(() -> jdbcTemplate.execute((Connection connection) -> {
+            User user = null;
+            try (CallableStatement callableStatement = connection.prepareCall("{call GetUserByEmail(?)}")) {
+                callableStatement.setString(1, email);
+                try (ResultSet resultSet = callableStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        user = new User();
+                        user.setUserID(resultSet.getLong("UserID"));
+                        user.setUsername(resultSet.getString("Username"));
+                        user.setPassword(resultSet.getString("Password"));
+                        user.setEmail(resultSet.getString("Email"));
+                        user.setPhoneNumber(resultSet.getString("PhoneNumber"));
+                        user.setRegistrationDate(resultSet.getTimestamp("RegistrationDate"));
+                        user.setGender(resultSet.getByte("Gender"));
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return user;
+        }));
+    }
+
+
+    @Async
     public CompletableFuture<User> addNewUserProcedure(String username, String password, String email, String phoneNumber, int gender) {
         return CompletableFuture.supplyAsync(() -> jdbcTemplate.execute((Connection connection) -> {
             User user = null;
@@ -84,7 +110,7 @@ public class AsyncUserServiceImpl implements AsyncUserService {
     }
 
     @Async
-    public CompletableFuture<Void> updateUserInfoProcedure(Long userId,  String username, String password, String email, String phoneNumber, int gender) {
+    public CompletableFuture<Void> updateUserInfoProcedure(Long userId, String username, String password, String email, String phoneNumber, int gender) {
         return CompletableFuture.runAsync(() -> {
             jdbcTemplate.execute((Connection connection) -> {
                 try (CallableStatement callableStatement = connection.prepareCall("{call UpdateUserInfo(?, ?, ?, ?, ?, ?)}")) {

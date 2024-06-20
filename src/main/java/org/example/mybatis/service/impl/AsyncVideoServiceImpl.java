@@ -1,6 +1,5 @@
 package org.example.mybatis.service.impl;
 
-import org.example.mybatis.entity.User;
 import org.example.mybatis.entity.Video;
 import org.example.mybatis.service.AsyncVideoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +8,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -119,7 +116,6 @@ public class AsyncVideoServiceImpl implements AsyncVideoService {
             });
         });
     }
-
 
 
     @Async

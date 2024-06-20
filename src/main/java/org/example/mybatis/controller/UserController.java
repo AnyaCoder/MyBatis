@@ -1,4 +1,5 @@
 package org.example.mybatis.controller;
+
 import org.example.mybatis.entity.User;
 import org.example.mybatis.service.AsyncUserService;
 import org.example.mybatis.service.UserService;
@@ -6,8 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.concurrent.CompletableFuture;
+
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("users")

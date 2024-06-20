@@ -3,6 +3,7 @@ package org.example.mybatis.entity;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+
 import java.sql.Timestamp;
 
 @Setter

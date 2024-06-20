@@ -3,11 +3,10 @@ package org.example.mybatis.service.impl;
 import org.example.mybatis.entity.Comment;
 import org.example.mybatis.entity.CommentInfo;
 import org.example.mybatis.service.AsyncCommentService;
-import org.example.mybatis.service.AsyncVideoService;
-import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
