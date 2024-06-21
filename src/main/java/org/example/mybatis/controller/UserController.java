@@ -1,6 +1,8 @@
 package org.example.mybatis.controller;
 
+import org.example.mybatis.entity.Admin;
 import org.example.mybatis.entity.User;
+import org.example.mybatis.entity.UserStats;
 import org.example.mybatis.service.AsyncUserService;
 import org.example.mybatis.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,34 @@ public class UserController {
                     }
                 });
     }
+
+
+    @GetMapping("/async/stats/{userId}")
+    public CompletableFuture<ResponseEntity<UserStats>> getUserStatsAsync(@PathVariable("userId") Long userId) {
+        return asyncUserService.getUserStats(userId)
+                .thenApply(userStats -> {
+                    if (userStats != null) {
+                        return new ResponseEntity<>(userStats, HttpStatus.OK);
+                    } else {
+                        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                    }
+                });
+    }
+
+    @PostMapping("/async/login")
+    public CompletableFuture<User> login(@RequestBody User user) {
+        return asyncUserService.getUserByPhoneNumber(user.getPhoneNumber(), user.getPassword())
+                .thenApply(users -> {
+                    if (users.size() == 1) {
+                        return users.get(0); // 返回匹配的唯一用户
+                    } else if (users.size() > 1) {
+                        throw new RuntimeException("Multiple users found with the same credentials");
+                    } else {
+                        throw new RuntimeException("No user found with the given credentials");
+                    }
+                });
+    }
+
 
     @PostMapping("/async")
     public CompletableFuture<ResponseEntity<User>> insertUserAsync(@RequestBody User user) {

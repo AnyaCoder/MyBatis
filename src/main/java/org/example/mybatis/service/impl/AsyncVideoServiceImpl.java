@@ -123,11 +123,10 @@ public class AsyncVideoServiceImpl implements AsyncVideoService {
     public CompletableFuture<Void> updateVideoInfoProcedure(Long videoId, String title, String description, String videoPath) {
         return CompletableFuture.runAsync(() -> {
             jdbcTemplate.execute((Connection connection) -> {
-                try (CallableStatement callableStatement = connection.prepareCall("{call UpdateVideoInfo(?, ?, ?, ?)}")) {
+                try (CallableStatement callableStatement = connection.prepareCall("{call UpdateVideoInfo(?, ?, ?)}")) {
                     callableStatement.setLong(1, videoId);
                     callableStatement.setString(2, title);
                     callableStatement.setString(3, description);
-                    callableStatement.setString(4, videoPath);
                     callableStatement.execute();
                 } catch (SQLException e) {
                     e.printStackTrace();

@@ -203,7 +203,9 @@ public class VideoController {
         return asyncVideoService.incrementLikes(videoId);
     }
 
-    @DeleteMapping("/async/{videoId}/view")
+    @DeleteMapping("/async" +
+            "" +
+            "/{videoId}/view")
     public CompletableFuture<Void> deleteView(@PathVariable("videoId") Long videoId) {
         return asyncVideoService.decrementViews(videoId);
     }
