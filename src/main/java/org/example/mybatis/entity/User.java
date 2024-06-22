@@ -18,4 +18,5 @@ public class User {
     private String phoneNumber;
     private Timestamp registrationDate;
     private int gender;
+    private String sessionID;
 }

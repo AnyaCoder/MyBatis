@@ -24,7 +24,7 @@ public class AsyncFollowServiceImpl implements AsyncFollowService {
     public CompletableFuture<Void> insertNewFollow(Long userId, Long followedUserId) {
         return CompletableFuture.runAsync(() -> {
             jdbcTemplate.execute((Connection connection) -> {
-                try (CallableStatement callableStatement = connection.prepareCall("{call InsertNewFollow(?, ?)}")) {
+                try (CallableStatement callableStatement = connection.prepareCall("{call FollowUser(?, ?)}")) {
                     callableStatement.setLong(1, userId);
                     callableStatement.setLong(2, followedUserId);
                     callableStatement.execute();
@@ -40,7 +40,7 @@ public class AsyncFollowServiceImpl implements AsyncFollowService {
     public CompletableFuture<Void> deleteFollow(Long userId, Long followedUserId) {
         return CompletableFuture.runAsync(() -> {
             jdbcTemplate.execute((Connection connection) -> {
-                try (CallableStatement callableStatement = connection.prepareCall("{call DeleteFollow(?, ?)}")) {
+                try (CallableStatement callableStatement = connection.prepareCall("{call UnFollowUser(?, ?)}")) {
                     callableStatement.setLong(1, userId);
                     callableStatement.setLong(2, followedUserId);
                     callableStatement.execute();

@@ -1,6 +1,6 @@
 package org.example.mybatis.controller;
 
-import org.example.mybatis.entity.Admin;
+import java.util.UUID;
 import org.example.mybatis.entity.User;
 import org.example.mybatis.entity.UserStats;
 import org.example.mybatis.service.AsyncUserService;
@@ -54,7 +54,10 @@ public class UserController {
         return asyncUserService.getUserByPhoneNumber(user.getPhoneNumber(), user.getPassword())
                 .thenApply(users -> {
                     if (users.size() == 1) {
-                        return users.get(0); // 返回匹配的唯一用户
+                        User loggedInUser = users.get(0);
+                        String sessionId = UUID.randomUUID().toString();
+                        loggedInUser.setSessionID(sessionId); // 将会话ID添加到用户对象中
+                        return loggedInUser; // 返回包含会话ID的用户对象
                     } else if (users.size() > 1) {
                         throw new RuntimeException("Multiple users found with the same credentials");
                     } else {
